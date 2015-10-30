@@ -11,6 +11,17 @@ namespace OdataClient
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            DisplayPerson();
+        }
+
+        void DisplayPerson()
+        {
+            // TODO: Replace with your local URI.
+            string serviceUri = "http://localhost:53569/odata/";
+            var container = new Default.Container(new Uri(serviceUri));
+
+            GridView1.DataSource = container.Person;
+            GridView1.DataBind();
 
         }
     }
