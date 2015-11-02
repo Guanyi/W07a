@@ -19,10 +19,11 @@ namespace OdataClient
             // TODO: Replace with your local URI.
             string serviceUri = "http://localhost:53569/odata/";
             var container = new Default.Container(new Uri(serviceUri));
-
-            GridView1.DataSource = container.Person;
-            GridView1.DataBind();
-
+            if (container != null)
+            {
+                GridView1.DataSource = container.Person;
+                GridView1.DataBind();
+            }
         }
     }
 }

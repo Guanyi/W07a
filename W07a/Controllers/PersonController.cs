@@ -31,7 +31,7 @@ namespace W07a.Controllers
 
         // GET: odata/Person
         [EnableQuery]
-        //[Authorize]
+        [Authorize]
         public IQueryable<Person> GetPerson()
         {
             return db.People;
@@ -39,7 +39,7 @@ namespace W07a.Controllers
 
         // GET: odata/Person(5)
         [EnableQuery]
-        //[Authorize]
+        [Authorize]
         public SingleResult<Person> GetPerson([FromODataUri] int key)
         {
             return SingleResult.Create(db.People.Where(person => person.PersonId == key));

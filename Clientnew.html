@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+
+    <form id="userSignup">
+        <input type="text" name="username" placeholder="Name" />
+        <input type="password" name="password" placeholder="Password" />
+    </form>
+    <input type="submit" id="signin" value="Sign in" />
+    <input type="submit" id="getData" value="Get data" />
+
+    <pre id="preOutput"></pre>
+    <ul></ul>
+
+    <script>
+        $(function () {
+            var token = "";
+            var showResponse = function (object) {
+                $("#preOutput").text(JSON.stringify(object, null, 4));
+                $("#preOutput").append(token);
+            };
+
+            var signin = function () {
+                var tokenUrl = "http://localhost:53569/Token";
+                var loginData = $("#userSignup").serialize();
+                loginData = loginData + "&grant_type=password";
+                $.post(tokenUrl, loginData).success(saveAccessToken).always(showResponse);
+                return false;
+            };
+            
+            $("#signin").click(signin);
+
+            var saveAccessToken = function (data) {
+                token = data.access_token;
+            };
+            
+            $("#getData").click(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:53569/odata/Person',
+                    beforeSend: function(request){
+                        request.setRequestHeader('Authorization', 'Bearer ' + token);
+                    },
+                    //headers: {'Authorization': 'Bearer ' + token},
+                    success: function(data) {
+                        console.log("success", data.value);
+                        $.each(data.value, function(key, item) {
+                            $("ul").append("<li>" + item.FirstName + "</li>")
+                        });
+                    }
+                });
+            });
+        })
+    </script>
+
+</body>
+</html>

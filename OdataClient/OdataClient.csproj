@@ -195,6 +195,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
+    <Content Include="Login.html" />
     <Content Include="PersonModel.ttinclude" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="PersonModel.tt">

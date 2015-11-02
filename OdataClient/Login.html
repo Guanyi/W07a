@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+
+    <form id="userSignup">
+        <input type="text" name="username" placeholder="Name" />
+        <input type="password" name="password" placeholder="Password" />
+    </form>
+    <input type="submit" id="signin" value="Sign in" />
+    <input type="submit" id="getData" value="Get data" />
+
+    <pre id="preOutput"></pre>
+
+    <script>
+        $(function () {
+            var token = "";
+            $("#signin").click(signin);            
+
+            var signin = function () {
+                var tokenUrl = "http://localhost:53569/Token";
+                var loginData = $("#userSignup").serialize();
+                loginData = loginData + "&grant_type=password";
+                $.post(tokenUrl, loginData).success(saveAccessToken).always(showResponse);
+                return false;
+            };
+
+            var saveAccessToken = function (data) {
+                token = data.access_token;
+            };
+
+            var showResponse = function (object) {
+                $("#preOutput").text(JSON.stringify(object, null, 4));
+            };
+
+            var getData = function () {
+                $.ajax("http://localhost:53569/odata",
+                {
+                    type: "GET",
+                    headers: getHeaders()
+                }).always(showResponse);
+                return false;
+            };
+
+            var getHeaders = function () {
+                if (token) {
+                    return { "Authorization": "Bearer " + token };
+                }
+            };
+
+        })
+    </script>
+
+</body>
+</html>
